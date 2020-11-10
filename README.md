@@ -1,10 +1,10 @@
-#Telegram bot creator for NIT 
-###Stack:
+# Telegram bot creator for NIT 
+### Stack:
  - **M**ongo
  - **E**xpress
  - **R**eact
  - **N**ode.js
- ###Additional libraries:
+### Additional libraries:
  - Ant.design
  - Passport.js
 
