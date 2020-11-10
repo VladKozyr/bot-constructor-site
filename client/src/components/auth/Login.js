@@ -3,6 +3,7 @@ import {Button, Input} from "antd";
 import {loginUser} from "../../_actions/auth_actions";
 import {connect} from "react-redux";
 import useInputValue from "../../utils/hooks/useInputValue";
+import {Link} from "react-router-dom";
 
 function Login({loginUser, error}) {
 
@@ -24,9 +25,10 @@ function Login({loginUser, error}) {
                             value={password.bind.value}
                             onChange={password.bind.onChange}/>
             <Button onClick={() => loginUser(email.bind.value, password.bind.value)}
-                    style={{marginTop: "20px"}}>
+                    style={{marginTop: "20px", marginRight: "20px"}}>
                 Login
             </Button>
+            <Link to={"/"}>HOME</Link>
             <p>{error}</p>
         </div>
     )

@@ -37,10 +37,10 @@ export function loginUser(email, password) {
     }
 }
 
-export function registerUser(email, name, password, password2) {
+export function registerUser(name, email, password, password2) {
     const requestBody = {
-        email,
         name,
+        email,
         password,
         password2
     };
@@ -50,14 +50,10 @@ export function registerUser(email, name, password, password2) {
     return (dispatch, state) => {
         axios.post(BACKEND_URL + "/api/users/register", queryString.stringify(requestBody), config)
             .then(response => {
-                localStorage.setItem("user", response.data.token);
-                dispatch({
-                    type: AUTHENTICATED,
-                    payload: null
-                })
+                console.log(response.data);
             })
             .catch(err => {
-                console.log(err.toString());
+                console.log(err);
                 dispatch({
                     type: AUTHENTICATION_ERROR,
                     payload: err
