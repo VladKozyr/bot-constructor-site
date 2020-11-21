@@ -1,0 +1,127 @@
+.container {
+    width: 100%;
+    padding-right: 5%;
+    padding-left: 5%;
+    background-color: white;
+}
+
+.wonderful-header {
+    color: white;
+}
+
+.bot-card {
+    border-radius: 10px;
+}
+
+.right-create-new {
+    border: 3px red solid;
+}
+
+.my-bot-your-bot-text {
+    font-family: Poppins, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 36px;
+    line-height: 72px;
+}
+
+.my-bot-create-new-button {
+
+    background: #4951EC;
+    border-radius: 15px;
+    font-family: Poppins, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.5vw;
+    line-height: 30px;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #FFFFFF;
+
+}
+
+.rect {
+    width: 50%;
+    background: #bf74ec;
+    height: 100%;
+    margin-left: 5%;
+    border-radius: 2px;
+}
+
+.bot-div {
+    border-radius: 10px;
+    box-shadow: 3px 3px 3px 3px silver;
+    height: 130px;
+}
+
+.row-80 {
+    height: 100%;
+    align-items: center;
+}
+
+.col-100 {
+    height: 80%;
+}
+
+.my-bot-content {
+    height: 80%;
+}
+
+.my-bot-content-row {
+    width: 95%;
+    height: 50%;
+}
+
+.my-bot-content-button-edit {
+    width: 95%;
+    height: 40%;
+    background: #EEEFF3;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+}
+
+.my-bot-content-button-edit-text {
+    font-family: Roboto, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 0.8vw;
+    line-height: 0.2vw;
+    align-items: center;
+    text-align: center;
+    letter-spacing: -0.25px;
+    text-decoration-line: underline;
+    color: #acbbd0;
+    position: relative;
+    bottom: 0.5em;
+
+}
+
+.my-bot-content-name {
+    font-family: Poppins, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 2vw;
+    line-height: 54px;
+    display: flex;
+    align-items: center;
+}
+
+.my-bot-content-name-text {
+    padding-top: 10px;
+}
+
+.my-bot-content-delete-button {
+    padding: 2px;
+    border: none;
+    box-shadow: none;
+    vertical-align: top;
+}
+
+
+.my-bot-content-delete-button-icon {
+    font-size: 10px;
+}
+

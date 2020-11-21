@@ -1,0 +1,786 @@
+Index: client/src/App.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React from 'react';\nimport {Link} from \"react-router-dom\";\n\nfunction App(){\n    return (\n        <div>\n            <Link to={\"/login\"}>\n                LOGIN\n            </Link>\n            <div style={{width: \"100px\"}}>\n\n            </div>\n            <Link to={\"/register\"}>\n                REGISTER\n            </Link>\n        </div>\n    )\n}\n\nexport default App;\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- client/src/App.js	(revision 476f1c5df271677cc75f0cfce44650c05629b5d4)
++++ client/src/App.js	(date 1605971411724)
+@@ -1,7 +1,7 @@
+ import React from 'react';
+ import {Link} from "react-router-dom";
+ 
+-function App(){
++function App() {
+     return (
+         <div>
+             <Link to={"/login"}>
+@@ -13,6 +13,11 @@
+             <Link to={"/register"}>
+                 REGISTER
+             </Link>
++            <div>
++                <Link to={"/my-bots"}>
++                    MY BOTS
++                </Link>
++            </div>
+         </div>
+     )
+ }
+Index: client/src/components/Main.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React from \"react\"\nimport Button from \"antd\";\nimport {Link} from \"react-router-dom\";\nimport {connect} from \"react-redux\";\nimport {logoutUser} from \"../_actions/auth_actions\";\n\nfunction Main( {logoutUser} )\n{\n    return(\n        <div>\n            <Link to={\"/\"} onClick={() => logoutUser()}>\n                LOGOUT\n            </Link>\n        </div>\n    )\n}\n\nconst mapDispatchToProps = {\n    logoutUser\n};\n\nexport default connect(null, mapDispatchToProps)(Main);
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- client/src/components/Main.js	(revision 476f1c5df271677cc75f0cfce44650c05629b5d4)
++++ client/src/components/Main.js	(date 1605971411727)
+@@ -1,12 +1,12 @@
+ import React from "react"
++import {Switch, Route} from "react-router-dom";
+ import Button from "antd";
+ import {Link} from "react-router-dom";
+ import {connect} from "react-redux";
+ import {logoutUser} from "../_actions/auth_actions";
+ 
+-function Main( {logoutUser} )
+-{
+-    return(
++function Main({logoutUser}) {
++    return (
+         <div>
+             <Link to={"/"} onClick={() => logoutUser()}>
+                 LOGOUT
+Index: client/src/index.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React from 'react';\nimport ReactDOM from 'react-dom';\nimport App from './App';\nimport * as serviceWorker from './serviceWorker';\nimport {Route, BrowserRouter as Router} from \"react-router-dom\";\n\nimport {Provider} from \"react-redux\";\nimport store from \"./store\";\n\nimport Register from \"./components/auth/Register\";\nimport Login from \"./components/auth/Login\";\nimport Main from \"./components/Main\";\nimport withAuth from \"./hoc/auth/withAuth\";\n\nimport 'antd/dist/antd.css';\n\nReactDOM.render(\n    <Provider store={store}>\n        <Router>\n            <Route exact path={\"/\"} component={App}/>\n            <Route exact path={\"/register\"} component={Register}/>\n            <Route exact path={\"/login\"} component={Login}/>\n            <Route exact path={\"/main\"} component={withAuth(Main)}/>\n        </Router>\n    </Provider>,\n    document.getElementById('root')\n);\n\nserviceWorker.unregister();\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- client/src/index.js	(revision 476f1c5df271677cc75f0cfce44650c05629b5d4)
++++ client/src/index.js	(date 1605971411728)
+@@ -11,9 +11,12 @@
+ import Login from "./components/auth/Login";
+ import Main from "./components/Main";
+ import withAuth from "./hoc/auth/withAuth";
++import MyBots from "./components/my-bots/MyBots";
+ 
+ import 'antd/dist/antd.css';
+ 
++// import "./components/my-bots/my-bots.module.css"
++
+ ReactDOM.render(
+     <Provider store={store}>
+         <Router>
+@@ -21,9 +24,11 @@
+             <Route exact path={"/register"} component={Register}/>
+             <Route exact path={"/login"} component={Login}/>
+             <Route exact path={"/main"} component={withAuth(Main)}/>
++            <Route exact path={"/my-bots"} component={MyBots}/>
+         </Router>
+     </Provider>,
+     document.getElementById('root')
+ );
+ 
++
+ serviceWorker.unregister();
+Index: client/src/components/my-bots/MyBots.js
+===================================================================
+--- client/src/components/my-bots/MyBots.js	(date 0)
++++ client/src/components/my-bots/MyBots.js	(date 0)
+@@ -0,0 +1,146 @@
++import React, {useState} from 'react';
++import {Row, Col, Layout, Button, Modal, Input} from 'antd';
++import {CloseOutlined} from '@ant-design/icons';
++import {BOTS} from "./bots";
++import styles from "./my-bots.module.css";
++import "./my-bots.css"
++// import Icon from "antd/es/icon";
++// import withRouter from "react-router/modules/withRouter";
++
++const {Content, Header} = Layout;
++
++function MyBots() {
++
++    const [visible, setVisible] = useState(false);
++
++    return (
++        <div>
++            <Layout>
++                <Header>
++                    <div
++                        // className={styles.wonderfulHeader}
++                        className="wonderful-header"
++                    >Wonderful header
++                    </div>
++                </Header>
++                <Content
++                    // className={styles.container}
++                    className="container"
++                >
++                    <Row gutter={[{xs: 20, sm: 30, md: 60, lg: 80}, 30]} align="middle">
++                        <Col span={19}>
++                            <span
++                                // className={styles.myBotYourBotText}
++                                className="my-bot-your-bot-text"
++                            >Your bots</span>
++                        </Col>
++                        <Col span={5}>
++                            <Button
++                                // className="my-bot-create-new-button"
++                                style={{
++                                    background: "#4951EC",
++                                    'border-radius': "15px",
++                                    'font-family': "Poppins, sans-serif",
++                                    'font-style': "normal",
++                                    'font-weight': "normal",
++                                    'font-size': "1.5vw",
++                                    'line-height': "30px",
++                                    padding: "20px 30px",
++                                    display: "flex",
++                                    'align-items': "center",
++                                    'text-align': "center",
++                                    color: "#FFFFFF"
++                                }}
++                                onClick={() => setVisible(true)}
++                                // className={styles.myBotCreateNewButton}
++                            >Create New</Button>
++                            <Modal
++                                title="New Bot"
++                                visible={visible}
++                                onOk={() => setVisible(false)}
++                                onCancel={() => setVisible(false)}
++                            >
++                                <Input placeholder="Your bot's name"/>
++                            </Modal>
++                        </Col>
++                    </Row>
++                    <Row gutter={[{xs: 20, sm: 30, md: 60, lg: 80}, 30]}>
++                        {botTemp}
++                    </Row>
++                </Content>
++            </Layout>
++        </div>
++    );
++}
++
++const botTemp = BOTS.map((bot) => {
++    return (
++        <Col span={8}>
++            <div
++                // className={styles.botDiv}
++                className="bot-div"
++            >
++                <Row
++                    // className={styles.row80}
++                    className="row-80"
++                >
++                    <Col offset={2} span={1}
++                        // className={styles.col100}
++                         className="col-100"
++                    >
++                        <div
++                            // className={styles.rect}
++                            className="rect"
++                        />
++                    </Col>
++                    <Col offset={1} flex="auto"
++                        // className={styles.myBotContent}
++                         className="my-bot-content"
++                    >
++                        <Row
++                            // className={styles.myBotContentRow}
++                            // classname={styles.myBotContentName}
++                            className="my-bot-content-row my-bot-content-name"
++                        >
++                            <Col span={15}
++                                // className={styles.myBotContentNameText}
++                                 className="my-bot-content-name-text"
++                            >
++                                {bot.name}
++                            </Col>
++                            <Col offset={6} span={1}>
++                                <CloseOutlined
++                                    // className={styles.myBotContentDeleteButtonIcon}
++                                    className="my-bot-content-delete-button-icon"
++                                />
++                            </Col>
++                        </Row>
++                        <Row
++                            // className={styles.myBotContentRow}
++                            className="my-bot-content-row"
++                            align="bottom">
++                            <Button
++                                // className={styles.myBotContentButtonEdit}
++                                // className="my-bot-content-button-edit"
++                                style={{
++                                    width: "95%",
++                                    height: "40%",
++                                    background: "#EEEFF3",
++                                    'box-shadow': "0px 2px 2px rgba(0, 0, 0, 0.25)",
++                                    'border-radius': "8px"
++                                }}
++                            >
++                                <span
++                                    // className={styles.myBotContentButtonEditText}
++                                    className="my-bot-content-button-edit-text"
++                                >EDIT</span>
++                            </Button>
++                        </Row>
++                    </Col>
++                </Row>
++            </div>
++        </Col>
++    );
++});
++
++export default MyBots;
+\ No newline at end of file
+Index: client/src/components/my-bots/my-bots.css
+===================================================================
+--- client/src/components/my-bots/my-bots.css	(date 0)
++++ client/src/components/my-bots/my-bots.css	(date 0)
+@@ -0,0 +1,127 @@
++.container {
++    width: 100%;
++    padding-right: 5%;
++    padding-left: 5%;
++    background-color: white;
++}
++
++.wonderful-header {
++    color: white;
++}
++
++.bot-card {
++    border-radius: 10px;
++}
++
++.right-create-new {
++    border: 3px red solid;
++}
++
++.my-bot-your-bot-text {
++    font-family: Poppins, sans-serif;
++    font-style: normal;
++    font-weight: normal;
++    font-size: 36px;
++    line-height: 72px;
++}
++
++.my-bot-create-new-button {
++
++    background: #4951EC;
++    border-radius: 15px;
++    font-family: Poppins, sans-serif;
++    font-style: normal;
++    font-weight: normal;
++    font-size: 1.5vw;
++    line-height: 30px;
++    padding: 20px 30px;
++    display: flex;
++    align-items: center;
++    text-align: center;
++
++    color: #FFFFFF;
++
++}
++
++.rect {
++    width: 50%;
++    background: #bf74ec;
++    height: 100%;
++    margin-left: 5%;
++    border-radius: 2px;
++}
++
++.bot-div {
++    border-radius: 10px;
++    box-shadow: 3px 3px 3px 3px silver;
++    height: 130px;
++}
++
++.row-80 {
++    height: 100%;
++    align-items: center;
++}
++
++.col-100 {
++    height: 80%;
++}
++
++.my-bot-content {
++    height: 80%;
++}
++
++.my-bot-content-row {
++    width: 95%;
++    height: 50%;
++}
++
++.my-bot-content-button-edit {
++    width: 95%;
++    height: 40%;
++    background: #EEEFF3;
++    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
++    border-radius: 8px;
++}
++
++.my-bot-content-button-edit-text {
++    font-family: Roboto, sans-serif;
++    font-style: normal;
++    font-weight: bold;
++    font-size: 0.8vw;
++    line-height: 0.2vw;
++    align-items: center;
++    text-align: center;
++    letter-spacing: -0.25px;
++    text-decoration-line: underline;
++    color: #acbbd0;
++    position: relative;
++    bottom: 0.5em;
++
++}
++
++.my-bot-content-name {
++    font-family: Poppins, sans-serif;
++    font-style: normal;
++    font-weight: normal;
++    font-size: 2vw;
++    line-height: 54px;
++    display: flex;
++    align-items: center;
++}
++
++.my-bot-content-name-text {
++    padding-top: 10px;
++}
++
++.my-bot-content-delete-button {
++    padding: 2px;
++    border: none;
++    box-shadow: none;
++    vertical-align: top;
++}
++
++
++.my-bot-content-delete-button-icon {
++    font-size: 10px;
++}
++
+Index: client/src/components/my-bots/my-bots.module.css
+===================================================================
+--- client/src/components/my-bots/my-bots.module.css	(date 0)
++++ client/src/components/my-bots/my-bots.module.css	(date 0)
+@@ -0,0 +1,127 @@
++.container {
++    width: 100%;
++    padding-right: 5%;
++    padding-left: 5%;
++    background-color: white;
++}
++
++.wonderful-header {
++    color: white;
++}
++
++.bot-card {
++    border-radius: 10px;
++}
++
++.right-create-new {
++    border: 3px red solid;
++}
++
++.my-bot-your-bot-text {
++    font-family: Poppins, sans-serif;
++    font-style: normal;
++    font-weight: normal;
++    font-size: 36px;
++    line-height: 72px;
++}
++
++.my-bot-create-new-button {
++
++    background: #4951EC;
++    border-radius: 15px;
++    font-family: Poppins, sans-serif;
++    font-style: normal;
++    font-weight: normal;
++    font-size: 1.5vw;
++    line-height: 30px;
++    padding: 20px 30px;
++    display: flex;
++    align-items: center;
++    text-align: center;
++
++    color: #FFFFFF;
++
++}
++
++.rect {
++    width: 50%;
++    background: #bf74ec;
++    height: 100%;
++    margin-left: 5%;
++    border-radius: 2px;
++}
++
++.bot-div {
++    border-radius: 10px;
++    box-shadow: 3px 3px 3px 3px silver;
++    height: 130px;
++}
++
++.row-80 {
++    height: 100%;
++    align-items: center;
++}
++
++.col-100 {
++    height: 80%;
++}
++
++.my-bot-content {
++    height: 80%;
++}
++
++.my-bot-content-row {
++    width: 95%;
++    height: 50%;
++}
++
++.my-bot-content-button-edit {
++    width: 95%;
++    height: 40%;
++    background: #EEEFF3;
++    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
++    border-radius: 8px;
++}
++
++.my-bot-content-button-edit-text {
++    font-family: Roboto, sans-serif;
++    font-style: normal;
++    font-weight: bold;
++    font-size: 0.8vw;
++    line-height: 0.2vw;
++    align-items: center;
++    text-align: center;
++    letter-spacing: -0.25px;
++    text-decoration-line: underline;
++    color: #acbbd0;
++    position: relative;
++    bottom: 0.5em;
++
++}
++
++.my-bot-content-name {
++    font-family: Poppins, sans-serif;
++    font-style: normal;
++    font-weight: normal;
++    font-size: 2vw;
++    line-height: 54px;
++    display: flex;
++    align-items: center;
++}
++
++.my-bot-content-name-text {
++    padding-top: 10px;
++}
++
++.my-bot-content-delete-button {
++    padding: 2px;
++    border: none;
++    box-shadow: none;
++    vertical-align: top;
++}
++
++
++.my-bot-content-delete-button-icon {
++    font-size: 10px;
++}
++
+Index: client/src/components/my-bots/bots.js
+===================================================================
+--- client/src/components/my-bots/bots.js	(date 0)
++++ client/src/components/my-bots/bots.js	(date 0)
+@@ -0,0 +1,30 @@
++export const BOTS = [
++    {
++        id: 0,
++        name: "first",
++    },
++    {
++        id: 1,
++        name: "test",
++    },
++    {
++        id: 2,
++        name: "lol",
++    },
++    {
++        id: 3,
++        name: "taski-huiaski",
++    },
++    {
++        id: 4,
++        name: "bom-bom",
++    },
++    {
++        id: 5,
++        name: "this bot",
++    },
++    {
++        id: 4,
++        name: "that bot",
++    }
++]
+\ No newline at end of file
+Index: client/package.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>{\n  \"name\": \"client\",\n  \"version\": \"0.1.0\",\n  \"private\": true,\n  \"dependencies\": {\n    \"@testing-library/jest-dom\": \"^4.2.4\",\n    \"@testing-library/react\": \"^9.5.0\",\n    \"@testing-library/user-event\": \"^7.2.1\",\n    \"antd\": \"^4.8.0\",\n    \"axios\": \"^0.21.0\",\n    \"react\": \"^16.13.1\",\n    \"react-dom\": \"^16.13.1\",\n    \"react-redux\": \"^7.2.2\",\n    \"react-router\": \"^5.2.0\",\n    \"react-router-dom\": \"^5.2.0\",\n    \"react-scripts\": \"3.4.3\",\n    \"redux\": \"^4.0.5\",\n    \"redux-thunk\": \"^2.3.0\"\n  },\n  \"scripts\": {\n    \"start\": \"react-scripts start\",\n    \"build\": \"react-scripts build\",\n    \"test\": \"react-scripts test\",\n    \"eject\": \"react-scripts eject\"\n  },\n  \"eslintConfig\": {\n    \"extends\": \"react-app\"\n  },\n  \"browserslist\": {\n    \"production\": [\n      \">0.2%\",\n      \"not dead\",\n      \"not op_mini all\"\n    ],\n    \"development\": [\n      \"last 1 chrome version\",\n      \"last 1 firefox version\",\n      \"last 1 safari version\"\n    ]\n  }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- client/package.json	(revision 476f1c5df271677cc75f0cfce44650c05629b5d4)
++++ client/package.json	(date 1605971411721)
+@@ -3,10 +3,11 @@
+   "version": "0.1.0",
+   "private": true,
+   "dependencies": {
++    "@ant-design/icons": "^4.3.0",
+     "@testing-library/jest-dom": "^4.2.4",
+     "@testing-library/react": "^9.5.0",
+     "@testing-library/user-event": "^7.2.1",
+-    "antd": "^4.8.0",
++    "antd": "^4.8.2",
+     "axios": "^0.21.0",
+     "react": "^16.13.1",
+     "react-dom": "^16.13.1",
+Index: client/package-lock.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- client/package-lock.json	(revision 476f1c5df271677cc75f0cfce44650c05629b5d4)
++++ client/package-lock.json	(date 1605971411721)
+@@ -18,24 +18,24 @@
+       "integrity": "sha512-LrX0OGZtW+W6iLnTAqnTaoIsRelYeuLZWsrmBJFUXDALQphPsN8cE5DCsmoSlL0QYb94BQxINiuS70Ar/8BNgA=="
+     },
+     "@ant-design/icons": {
+-      "version": "4.2.2",
+-      "resolved": "https://registry.npmjs.org/@ant-design/icons/-/icons-4.2.2.tgz",
+-      "integrity": "sha512-DrVV+wcupnHS7PehJ6KiTcJtAR5c25UMgjGECCc6pUT9rsvw0AuYG+a4HDjfxEQuDqKTHwW+oX/nIvCymyLE8Q==",
++      "version": "4.3.0",
++      "resolved": "https://registry.npmjs.org/@ant-design/icons/-/icons-4.3.0.tgz",
++      "integrity": "sha512-UoIbw4oz/L/msbkgqs2nls2KP7XNKScOxVR54wRrWwnXOzJaGNwwSdYjHQz+5ETf8C53YPpzMOnRX99LFCdeIQ==",
+       "requires": {
+-        "@ant-design/colors": "^3.1.0",
++        "@ant-design/colors": "^5.0.0",
+         "@ant-design/icons-svg": "^4.0.0",
+-        "@babel/runtime": "^7.10.4",
++        "@babel/runtime": "^7.11.2",
+         "classnames": "^2.2.6",
+         "insert-css": "^2.0.0",
+         "rc-util": "^5.0.1"
+       },
+       "dependencies": {
+         "@ant-design/colors": {
+-          "version": "3.2.2",
+-          "resolved": "https://registry.npmjs.org/@ant-design/colors/-/colors-3.2.2.tgz",
+-          "integrity": "sha512-YKgNbG2dlzqMhA9NtI3/pbY16m3Yl/EeWBRa+lB1X1YaYxHrxNexiQYCLTWO/uDvAjLFMEDU+zR901waBtMtjQ==",
++          "version": "5.0.0",
++          "resolved": "https://registry.npmjs.org/@ant-design/colors/-/colors-5.0.0.tgz",
++          "integrity": "sha512-Pe1rYorgVC1v4f+InDXvIlQH715pO1g7BsOhy/ehX/U6ebPKqojmkYJKU3lF+84Zmvyar7ngZ28hesAa1nWjLg==",
+           "requires": {
+-            "tinycolor2": "^1.4.1"
++            "@ctrl/tinycolor": "^3.1.6"
+           }
+         }
+       }
+@@ -1214,6 +1214,11 @@
+       "resolved": "https://registry.npmjs.org/@csstools/normalize.css/-/normalize.css-10.1.0.tgz",
+       "integrity": "sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg=="
+     },
++    "@ctrl/tinycolor": {
++      "version": "3.1.7",
++      "resolved": "https://registry.npmjs.org/@ctrl/tinycolor/-/tinycolor-3.1.7.tgz",
++      "integrity": "sha512-/0C6fjXbCwu22k8mMsKRSAo9zgu61d2p75Or9IuIC0Vu5CWN88t2QHK93LhNnxnqHWf5SFwFU28w9cKfTmnfvg=="
++    },
+     "@hapi/address": {
+       "version": "2.1.4",
+       "resolved": "https://registry.npmjs.org/@hapi/address/-/address-2.1.4.tgz",
+@@ -2330,9 +2335,9 @@
+       }
+     },
+     "antd": {
+-      "version": "4.8.0",
+-      "resolved": "https://registry.npmjs.org/antd/-/antd-4.8.0.tgz",
+-      "integrity": "sha512-oqwcdCb9qBqLwcaKq03fOTIbX7fFHjLNoEKKOrHFYdlbxUdbhys1OBljZRyNiYb3V/7YdVKiS0UNvFjm+gil5w==",
++      "version": "4.8.2",
++      "resolved": "https://registry.npmjs.org/antd/-/antd-4.8.2.tgz",
++      "integrity": "sha512-qxagKsiPVO+2rcAdX8WA3TPqiv5TS4FDGoaETVgCCln3x7ap1nqHkBC+Fr3CSNg8MxwQ+6m5BSBLcs5uDQg0Qw==",
+       "requires": {
+         "@ant-design/colors": "^4.0.5",
+         "@ant-design/css-animation": "^1.7.2",
+@@ -2608,9 +2613,9 @@
+       "integrity": "sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ=="
+     },
+     "async-validator": {
+-      "version": "3.4.0",
+-      "resolved": "https://registry.npmjs.org/async-validator/-/async-validator-3.4.0.tgz",
+-      "integrity": "sha512-VrFk4eYiJAWKskEz115iiuCf9O0ftnMMPXrOFMqyzGH2KxO7YwncKyn/FgOOP+0MDHMfXL7gLExagCutaZGigA=="
++      "version": "3.5.0",
++      "resolved": "https://registry.npmjs.org/async-validator/-/async-validator-3.5.0.tgz",
++      "integrity": "sha512-jMDcDHrH618eznoO4/3afJG5+I4HE/ipQd7y4mhPJmCaoHCSPOJfjpWgjFoxma2h8irL+zGe+qwyptDrR37Vhg=="
+     },
+     "asynckit": {
+       "version": "0.4.0",
+@@ -3154,6 +3159,15 @@
+       "resolved": "https://registry.npmjs.org/binary-extensions/-/binary-extensions-2.1.0.tgz",
+       "integrity": "sha512-1Yj8h9Q+QDF5FzhMs/c9+6UntbD5MkRfRwac8DoEm9ZfUBZ7tZ55YcGVAzEe4bXsdQHEk+s9S5wsOKVdZrw0tQ=="
+     },
++    "bindings": {
++      "version": "1.5.0",
++      "resolved": "https://registry.npmjs.org/bindings/-/bindings-1.5.0.tgz",
++      "integrity": "sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==",
++      "optional": true,
++      "requires": {
++        "file-uri-to-path": "1.0.0"
++      }
++    },
+     "bluebird": {
+       "version": "3.7.2",
+       "resolved": "https://registry.npmjs.org/bluebird/-/bluebird-3.7.2.tgz",
+@@ -4455,9 +4469,9 @@
+       "integrity": "sha512-sAJVKx/FqrLYHAQeN7VpJrPhagZc9R4ImZIWYRFZaaohR3KzmuK88touwsSwSVT8Qcbd4zoDsnGfX4GFB4imyQ=="
+     },
+     "dayjs": {
+-      "version": "1.9.5",
+-      "resolved": "https://registry.npmjs.org/dayjs/-/dayjs-1.9.5.tgz",
+-      "integrity": "sha512-WULIw7UpW/E0y6VywewpbXAMH3d5cZijEhoHLwM+OMVbk/NtchKS/W+57H/0P1rqU7gHrAArjiRLHCUhgMQl6w=="
++      "version": "1.9.6",
++      "resolved": "https://registry.npmjs.org/dayjs/-/dayjs-1.9.6.tgz",
++      "integrity": "sha512-HngNLtPEBWRo8EFVmHFmSXAjtCX8rGNqeXQI0Gh7wCTSqwaKgPIDqu9m07wABVopNwzvOeCb+2711vQhDlcIXw=="
+     },
+     "debug": {
+       "version": "4.2.0",
+@@ -5940,6 +5954,12 @@
+         "schema-utils": "^2.5.0"
+       }
+     },
++    "file-uri-to-path": {
++      "version": "1.0.0",
++      "resolved": "https://registry.npmjs.org/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz",
++      "integrity": "sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==",
++      "optional": true
++    },
+     "filesize": {
+       "version": "6.0.1",
+       "resolved": "https://registry.npmjs.org/filesize/-/filesize-6.0.1.tgz",
+@@ -7556,7 +7576,11 @@
+           "version": "1.2.13",
+           "resolved": "https://registry.npmjs.org/fsevents/-/fsevents-1.2.13.tgz",
+           "integrity": "sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==",
+-          "optional": true
++          "optional": true,
++          "requires": {
++            "bindings": "^1.5.0",
++            "nan": "^2.12.1"
++          }
+         }
+       }
+     },
+@@ -8656,6 +8680,12 @@
+       "resolved": "https://registry.npmjs.org/mute-stream/-/mute-stream-0.0.8.tgz",
+       "integrity": "sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA=="
+     },
++    "nan": {
++      "version": "2.14.2",
++      "resolved": "https://registry.npmjs.org/nan/-/nan-2.14.2.tgz",
++      "integrity": "sha512-M2ufzIiINKCuDfBSAUr1vWQ+vuVcA9kqx8JJUsbQi6yf1uGRyb7HfpdfUr5qLXf3B/t8dPvcjhKMmlfnP47EzQ==",
++      "optional": true
++    },
+     "nanomatch": {
+       "version": "1.2.13",
+       "resolved": "https://registry.npmjs.org/nanomatch/-/nanomatch-1.2.13.tgz",
+@@ -10946,9 +10976,9 @@
+       }
+     },
+     "rc-slider": {
+-      "version": "9.6.1",
+-      "resolved": "https://registry.npmjs.org/rc-slider/-/rc-slider-9.6.1.tgz",
+-      "integrity": "sha512-pUXMLf5Ha3yS45ApwMYksmTNEH3M3+v8+bvm81eCUqO7sGQYHRPOsvmM78VRJyIlHiXp7H/QRcqvoPVrCyvSUw==",
++      "version": "9.6.2",
++      "resolved": "https://registry.npmjs.org/rc-slider/-/rc-slider-9.6.2.tgz",
++      "integrity": "sha512-uctdE1768ZmSjCcRmx6ffm/uoW/zl/SOvanvoilWyZ1NRlwkZCa1R20AIJlU9VDJo/FswWnqXqt6iDp2CnDVig==",
+       "requires": {
+         "@babel/runtime": "^7.10.1",
+         "classnames": "^2.2.5",
+@@ -13863,7 +13893,11 @@
+           "version": "1.2.13",
+           "resolved": "https://registry.npmjs.org/fsevents/-/fsevents-1.2.13.tgz",
+           "integrity": "sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==",
+-          "optional": true
++          "optional": true,
++          "requires": {
++            "bindings": "^1.5.0",
++            "nan": "^2.12.1"
++          }
+         },
+         "glob-parent": {
+           "version": "3.1.0",
+@@ -14143,7 +14177,11 @@
+           "version": "1.2.13",
+           "resolved": "https://registry.npmjs.org/fsevents/-/fsevents-1.2.13.tgz",
+           "integrity": "sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==",
+-          "optional": true
++          "optional": true,
++          "requires": {
++            "bindings": "^1.5.0",
++            "nan": "^2.12.1"
++          }
+         },
+         "glob-parent": {
+           "version": "3.1.0",
+Index: client/src/_reducers/my_bots_reducer.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- client/src/_reducers/my_bots_reducer.js	(date 0)
++++ client/src/_reducers/my_bots_reducer.js	(date 0)
+@@ -0,0 +1,12 @@
++import * as ActionTypes from "../_actions/bots_actions";
++
++export const My_bots_reducer = (state = {
++    bots: []
++}, action) => {
++    switch (action.type) {
++        case ActionTypes.ADD_BOT:
++            return {...state, bots: action.payload};
++        default:
++            return state;
++    }
++}
+\ No newline at end of file
+Index: client/src/_actions/bots_actions.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- client/src/_actions/bots_actions.js	(date 0)
++++ client/src/_actions/bots_actions.js	(date 0)
+@@ -0,0 +1,7 @@
++export const ADD_BOT = 'ADD_BOT';
++export const DELETE_BOT = 'DELETE_BOT';
++
++export const addBot = (bot) => ({
++    type: ADD_BOT,
++    payload: bot
++});
+\ No newline at end of file
