@@ -53,10 +53,12 @@ export function registerUser(name, email, password, password2) {
                 console.log(response.data);
             })
             .catch(err => {
-                console.log(err);
+                console.log(err.response.data);
+                console.log(err.response.status);
+                console.log(err.response.headers);
                 dispatch({
                     type: AUTHENTICATION_ERROR,
-                    payload: err
+                    payload: err.response.data
                 })
             })
     }
