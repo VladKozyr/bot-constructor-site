@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 
-function App(){
+function App() {
     return (
         <div>
             <Link to={"/login"}>
@@ -13,6 +13,11 @@ function App(){
             <Link to={"/register"}>
                 REGISTER
             </Link>
+            <div>
+                <Link to={"/my-bots"}>
+                    MY BOTS
+                </Link>
+            </div>
         </div>
     )
 }
