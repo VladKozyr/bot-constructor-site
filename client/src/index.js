@@ -13,6 +13,7 @@ import Main from "./components/Main";
 import withAuth from "./hoc/auth/withAuth";
 
 import 'antd/dist/antd.css';
+import MyBots from "./components/my-bots/MyBots";
 
 ReactDOM.render(
     <Provider store={store}>
@@ -21,6 +22,7 @@ ReactDOM.render(
             <Route exact path={"/register"} component={Register}/>
             <Route exact path={"/login"} component={Login}/>
             <Route exact path={"/main"} component={withAuth(Main)}/>
+            <Route exact path={"/my-bots"} component={MyBots}/>
         </Router>
     </Provider>,
     document.getElementById('root')
