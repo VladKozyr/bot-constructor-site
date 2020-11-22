@@ -1,45 +1,46 @@
 import React, {useEffect} from "react"
-import {connect} from "react-redux";
-import {withRouter} from "react-router";
-import {authenticateUser, logoutUser} from "../../_actions/auth_actions";
-const jwt = require('jsonwebtoken');
+import {useDispatch, useSelector} from "react-redux";
+import {authUser, logoutUser} from "../../_actions/auth_actions";
 
-function withAuth(ComposedComponent)
-{
+function withAuth(SpecificComponent, option) {
+
     function AuthenticationCheck(props) {
+
+        let user = useSelector(state => state.user);
+        const dispatch = useDispatch();
+
         useEffect(() => {
-            let token = localStorage.getItem("user");
-            if(token != null) {
-                token = token.slice(7);
-                try {
-                    jwt.verify(token, "secret")
-                } catch (e) {
-                    console.log(e);
-                    props.history.push('/login');
+            const token = window.localStorage.getItem("token");
+            if (token == null) {
+                if (option) {
+                    props.history.push('/login')
+                } else {
+                    dispatch(logoutUser())
                 }
-                authenticateUser();
             } else {
-                logoutUser();
-                props.history.push('/login');
+                dispatch(authUser(token)).then(response => {
+                    console.log(response);
+                    if (!response.isAuth) {
+                        if (option) {
+                            props.history.push('/login')
+                        }
+                    } else {
+                        if (!option) {
+                            props.history.push('/')
+                            //TODO dispatch set state user profile
+                        }
+                    }
+                })
             }
         }, []);
 
-        return <ComposedComponent {...props}/>
+        return (
+            <SpecificComponent {...props} user={user}/>
+        )
     }
 
-    return  connect(mapStateToProps, mapDispatchToProps)(withRouter(AuthenticationCheck));
+    return AuthenticationCheck
 }
-
-const mapStateToProps =  (state) => {
-    return {
-        isAuth: state.user.authenticated
-    }
-};
-
-const mapDispatchToProps = {
-    authenticateUser,
-    logoutUser
-};
 
 export default withAuth;
 

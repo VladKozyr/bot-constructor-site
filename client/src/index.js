@@ -18,7 +18,7 @@ ReactDOM.render(
     <Provider store={store}>
         <Router>
             <Header/>
-            <Route exact path={"/"} component={App}/>
+            <Route exact path={"/"} component={withAuth(App)}/>
             <Route exact path={"/register"} component={Register}/>
             <Route exact path={"/login"} component={Login}/>
             <Route exact path={"/main"} component={withAuth(Main)}/>

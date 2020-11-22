@@ -7,3 +7,9 @@
     justify-content: space-between;
     padding: 0 30px;
 }
+
+.header-profile {
+    display: flex;
+    width: 200px;
+    justify-content: space-between;
+}

@@ -2,6 +2,7 @@ import {AUTHENTICATED, AUTHENTICATION_ERROR, UNAUTHENTICATED} from "../_actions/
 
 const initialState = {
     authenticated: false,
+    profile: {},
     error: ""
 };
 
